@@ -4,29 +4,28 @@ inquirer
     {
       type: 'number',
       name: 'numero',
-      message: 'Você quer realizar o fatorial de qual número?',
+      message: 'Você quer que eu produza quantos algarismos da sequência de Fibonacci?',
       validate: function(value) {
-        const pass = typeof value === 'number' &&
-          String(value).match(/^\-?[0-9]+/);
+        const pass = typeof value === 'number' && value > 0 && value !== 0 &&
+          String(value).match(/^[0-9]+$/);
         if(pass) return true
         return 'Este número não é válido'
       },
-      default: 'apenas números inteiros'
+      default: 'apenas números inteiros positivos'
     }
   ])
   .then(answers => {
-    let numero = parseInt(answers.numero, 10);
-    console.log(numero);
-    let fatorial = numero;
+    let numDeAlgarismos = parseInt(answers.numero, 10);
+    let algarismo = numDeAlgarismos
+    let fibonacci= [0, 1]
 
-    if(numero === 0 || numero === 1) { fatorial = 1 }
-
-    while (numero !== 0 && numero !== 1) {
-      fatorial = (fatorial * (numero - 1));
-      numero -= 1;
+    while (algarismo > 1) {
+      const nextNumber = fibonacci[fibonacci.length - 2] + fibonacci[fibonacci.length - 1];
+      fibonacci.push(nextNumber);
+      algarismo = algarismo - 1;
     }
 
-    console.log(`O resultado de ${answers.numero} fatorial é ${fatorial}.`)
+    console.log(fibonacci.slice(1));
   })
   .catch(error => {
     if(error.isTtyError) {
