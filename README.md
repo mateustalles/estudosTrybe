@@ -1,3 +1,1 @@
-# linter-template
-
-Template repository to hold linter configurations
+Este é um pequeno exercício de nodeJS das primeiras aulas da Trybe utilizando o npm-inquirer.

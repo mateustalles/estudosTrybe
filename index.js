@@ -3,33 +3,30 @@ inquirer
   .prompt([
     {
       type: 'number',
-      name: 'altura',
-      message: 'Em primeiro lugar, qual sua altura?',
+      name: 'numero',
+      message: 'Você quer realizar o fatorial de qual número?',
       validate: function(value) {
-        const pass = value < 3 &&
-          String(value).match(/^[0-9]{1}\b\.?[0-9]{0,2}$/);
+        const pass = typeof value === 'number' &&
+          String(value).match(/^\-?[0-9]+/);
         if(pass) return true
-        return 'Esta altura não é válida'
+        return 'Este número não é válido'
       },
-      default: 'metros'
-    },
-    {
-      type: 'number',
-      name: 'peso',
-      message: 'E agora seu peso?',
-      validate: function(value) {
-        const pass = value > 0 && value < 199 &&
-          String(value).match(/[0-9]{1,3}/);
-        
-        if(pass) return true
-        return 'Escreva um peso válido';
-      },
-      default: 'kgs'
-    },
+      default: 'apenas números inteiros'
+    }
   ])
   .then(answers => {
-    const { peso, altura } = answers;
-    calcularIMC(peso, altura);
+    let numero = parseInt(answers.numero, 10);
+    console.log(numero);
+    let fatorial = numero;
+
+    if(numero === 0 || numero === 1) { fatorial = 1 }
+
+    while (numero !== 0 && numero !== 1) {
+      fatorial = (fatorial * (numero - 1));
+      numero -= 1;
+    }
+
+    console.log(`O resultado de ${answers.numero} fatorial é ${fatorial}.`)
   })
   .catch(error => {
     if(error.isTtyError) {
@@ -38,14 +35,3 @@ inquirer
       console.log(`Erro: ${error}`)
     }
   });
-
-function calcularIMC(peso, altura) {
-  const imc = Number.parseFloat(peso / Math.pow(altura, 2)).toFixed(2);
-
-  console.log(`Seu IMC é ${imc}`);
-  console.log(imc)
-  if (imc < 30) { console.log('Você não apresenta grau de obesidade.') } else
-  if (imc < 34.91) { console.log('Você apresenta obesidade grau I') } else
-  if (imc < 39.91) { console.log('Você apresenta obseidade grau II')} else
-  console.log('Você apresenta graus de obesidade 3 ou 4, tome cuidado!')
-};
